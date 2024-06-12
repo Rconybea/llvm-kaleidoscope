@@ -27,7 +27,7 @@ add_definitions(${PROJECT_CXX_FLAGS})
 # ----------------------------------------------------------------
 
 set(SELF_EXE kaleidoscope)
-set(SELF_SRCS kaleidoscope3.cpp)
+set(SELF_SRCS kaleidoscope8.cpp)
 
 xo_add_executable(${SELF_EXE} ${SELF_SRCS})
 #xo_headeronly_dependency(${SELF_EXE} xxx)
@@ -59,10 +59,19 @@ add_definitions(${LLVM_DEFINITIONS_LIST})
 
 # Find the libraries that correspond to the LLVM components
 # that we wish to use
-llvm_map_components_to_libnames(llvm_libs support core irreader)
+#llvm_map_components_to_libnames(llvm_libs support core irreader orcjit native) # apparently obsoleted by 2020
+execute_process(
+    COMMAND llvm-config --libs all
+    COMMAND tr -d '\n'
+    OUTPUT_VARIABLE LLVM_LIBS
+)
+
+message(STATUS "LLVM_LIBS=[${LLVM_LIBS}]")
 
 # Link against LLVM libraries
-target_link_libraries(${SELF_EXE} ${llvm_libs})
+target_link_libraries(${SELF_EXE} ${LLVM_LIBS})
+# required according to tutorial docs (on llvm 19.0)
+target_link_options(${SELF_EXE} PUBLIC -rdynamic)
 
 # ----------------------------------------------------------------
 # docs targets depend on all the other library/utest targets

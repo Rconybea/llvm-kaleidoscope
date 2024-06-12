@@ -1,4 +1,4 @@
-#include "KaleidoscopeJIT.h"
+//#include "KaleidoscopeJIT.h"
 #include "llvm/ADT/APFloat.h"
 #include "llvm/ADT/STLExtras.h"
 #include "llvm/IR/BasicBlock.h"
@@ -32,7 +32,7 @@
 #include <vector>
 
 using namespace llvm;
-using namespace llvm::orc;
+//using namespace llvm::orc;
 
 //===----------------------------------------------------------------------===//
 // Lexer
